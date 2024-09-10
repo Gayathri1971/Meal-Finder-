@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+
+
+
+
+
+    <style>
+        .head {
+            display: flex;
+            gap: 70%;
+            background-color: rgb(216, 91, 45);
+            width: 100%;
+            justify-content: right;
+            color: white;
+            height: 30px;
+        }
+
+        #search {
+            margin-left: 400px;
+            margin-top: -150px;
+        }
+
+        input {
+            width: 140px;
+            border-radius: 30px;
+            height: 25px;
+            border: 0px;
+            font-size: 10px;
+        }
+
+        p {
+            padding: 10px;
+        }
+
+        #search i {
+            color: white;
+            background-color: rgb(216, 91, 45);
+            padding: 3px 1px 1px 2px;
+            height: 25px;
+            width: 25px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 20px;
+            border: 1px solid white;
+        }
+
+        h4 {
+            color: white;
+            margin: 10px;
+            margin-left: -30px;
+        }
+
+        #p {
+            color: white;
+            font-size: 11px;
+            margin-left: -10px;
+        }
+
+        li {
+            list-style: none;
+            font-size: 10px;
+        }
+
+        #div3 {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+        }
+
+        .div img {
+            width: 75%;
+        }
+
+        .div h5 {
+            background: rgb(216, 91, 45);
+            width: 45%;
+            margin-left: 70px;
+            color: white;
+        }
+
+        .div {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+
+        #category {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            background-color: #f4f4f4;
+            position: absolute;
+            top: 30px;
+            right: 10px;
+            width: 100px;
+        }
+
+        /* Hamburger and close icon */
+        .icon {
+            font-size: 25px;
+            cursor: pointer;
+            
+            }
+
+        /* Styling for categories */
+        #category li {
+            padding: 10px;
+            background-color: #f4f4f4;
+            margin: 5px 0;
+            width: 100px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<!-- Header -->
+
+<body>
+    <div class="head">
+        <!-- <i class="fa-solid fa-house fa-lg"></i> -->
+        <p style="margin:-5px;">Meal Finder</p>
+        <!-- <i style="margin: 15px; margin-right: 70px;" class="fa-solid fa-bars fa-lg"></i> -->
+        <div class="icon" id="menuIcon" style="margin: -2px; margin-right: 70px;">&#9776;</div>
+    </div>
+
+    <img src="https://c0.wallpaperflare.com/preview/1010/631/604/table-food-cover-wood.jpg" alt="wallpaperflare"
+        style="height: 200px; width: 100%;">
+    <section id="search">
+        <input type="text" placeholder="Search recepies here....">
+        <i class="fa-solid fa-magnifying-glass fa"></i>
+        <h4>What are your favorite cuisines?</h4>
+        <p id="p">PERSONALISE YOUR EXPERIENCE</p>
+    </section>
+    <!-- categories -->
+    <section>
+        <p style="margin: 75px; margin-left: 80px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            CATEGORIES
+        </p>
+        <div id="div3"></div>
+    </section>
+
+    <!-- Hamburger Icon -->
+    <section>
+        <ul id="category">
+            <li> BEEF</li>
+            <li>CHICKEN</li>
+            <li>DESSERT</li>
+            <li>LAMB</li>
+            <li>MISCELLANEOUS</li>
+            <li>PASTA</li>
+            <li>PORK</li>
+            <li>SEAFOOD</li>
+            <li>SIDE</li>
+            <li>STARTER</li>
+            <li>VEGAN</li>
+            <li>VEGETARIAN</li>
+            <li>BREAKFAST</li>
+            <li>GOAT</li>
+        </ul>
+    </section>
+    <script>
+        // Fetch data from the MealDB API
+        fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+                const categories = data.categories;
+                console.log(data);
+
+                data.categories.forEach(category => {
+                    const ele = document.createElement('div');
+                    ele.className = 'div';
+
+                    const title = document.createElement('h5');
+                    title.textContent = category.strCategory;
+
+                    const img1 = document.createElement('img');
+                    img1.src = category.strCategoryThumb;
+                    img1.alt = category.strCategory;
+                    // img1.width='120';
+
+                    ele.appendChild(title);
+                    ele.appendChild(img1);
+                    div3.appendChild(ele);
+                });
+            });
+
+        // <!-- Hamburger Icon -->
+        const menuIcon = document.getElementById('menuIcon');
+        const categoryMenu = document.getElementById('category');
+
+        // Toggle menu visibility when the icon is clicked
+        menuIcon.addEventListener('click', () => {
+            if (categoryMenu.style.display === 'block') {
+                categoryMenu.style.display = 'none';
+                menuIcon.innerHTML = '&#9776;'; // Hamburger icon
+            } else {
+                categoryMenu.style.display = 'block';
+                menuIcon.innerHTML = '&times;'; // Close icon
+            }
+        });
+
+    </script>
+
+
+</body>
+
+</html>
