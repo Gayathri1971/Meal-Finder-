@@ -4,15 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Meal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-
-
-
-
-
-
     <style>
         .head {
             display: flex;
@@ -108,8 +101,9 @@
         .icon {
             font-size: 25px;
             cursor: pointer;
-            
-            }
+            /* background-color: white; */
+
+        }
 
         /* Styling for categories */
         #category li {
@@ -147,12 +141,13 @@
             CATEGORIES
         </p>
         <div id="div3"></div>
+        <div id="des">desciption</div>
     </section>
 
     <!-- Hamburger Icon -->
     <section>
         <ul id="category">
-            <li> BEEF</li>
+            <li> <a href="BEEF">BEEF</a></li>
             <li>CHICKEN</li>
             <li>DESSERT</li>
             <li>LAMB</li>
@@ -175,26 +170,21 @@
             .then(data => {
                 const categories = data.categories;
                 console.log(data);
-
                 data.categories.forEach(category => {
                     const ele = document.createElement('div');
                     ele.className = 'div';
-
                     const title = document.createElement('h5');
                     title.textContent = category.strCategory;
-
                     const img1 = document.createElement('img');
                     img1.src = category.strCategoryThumb;
                     img1.alt = category.strCategory;
-                    // img1.width='120';
-
                     ele.appendChild(title);
                     ele.appendChild(img1);
                     div3.appendChild(ele);
                 });
             });
 
-        // <!-- Hamburger Icon -->
+        //  Hamburger Icon 
         const menuIcon = document.getElementById('menuIcon');
         const categoryMenu = document.getElementById('category');
 
@@ -207,7 +197,14 @@
                 categoryMenu.style.display = 'block';
                 menuIcon.innerHTML = '&times;'; // Close icon
             }
+
         });
+
+        //  Hamburger Icon Items
+            const description1=document.getElementById('des');
+
+
+
 
     </script>
 
