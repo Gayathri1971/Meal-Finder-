@@ -130,10 +130,11 @@
     <img src="https://c0.wallpaperflare.com/preview/1010/631/604/table-food-cover-wood.jpg" alt="wallpaperflare"
         style="height: 200px; width: 100%;">
     <section id="search">
-        <input type="text" placeholder="Search recepies here....">
-        <i class="fa-solid fa-magnifying-glass fa"></i>
+        <input id="search-input" type="text" placeholder="Search recepies here....">
+        <i id="search-icon" class="fa-solid fa-magnifying-glass fa"></i>
         <h4>What are your favorite cuisines?</h4>
         <p id="p">PERSONALISE YOUR EXPERIENCE</p>
+
     </section>
     <!-- categories -->
     <section>
@@ -141,48 +142,109 @@
             CATEGORIES
         </p>
         <div id="div3"></div>
-        <div id="des">desciption</div>
     </section>
 
     <!-- Hamburger Icon -->
     <section>
         <ul id="category">
-            <li> <a href="BEEF">BEEF</a></li>
-            <li>CHICKEN</li>
-            <li>DESSERT</li>
-            <li>LAMB</li>
-            <li>MISCELLANEOUS</li>
-            <li>PASTA</li>
-            <li>PORK</li>
-            <li>SEAFOOD</li>
-            <li>SIDE</li>
-            <li>STARTER</li>
-            <li>VEGAN</li>
-            <li>VEGETARIAN</li>
-            <li>BREAKFAST</li>
-            <li>GOAT</li>
+            <li><a href="BEEF"> BEEF </a></li>
+            <li> <a href="CHICKEN">CHICKEN</a></li>
+            <li><a href="DESSERT">DESSERT</a></li>
+            <li><a href="LAMB">LAMB</a></li>
+            <li><a href="MISCELLANEOUS">MISCELLANEOUS</a></li>
+            <li><a href="PASTA">PASTA</a></li>
+            <li><a href="PORK">PORK</a></li>
+            <li><a href="SEAFOOD">SEAFOOD</a></li>
+            <li><a href="SIDE">SIDE</a></li>
+            <li><a href="STARTER">STARTER</a></li>
+            <li><a href="VEGAN">VEGAN</a></li>
+            <li><a href="VEGETARIAN">VEGETARIAN</a></li>
+            <li><a href="BREAKFAST">BREAKFAST</a></li>
+            <li><a href="GOAT">GOAT</a></li>
         </ul>
     </section>
     <script>
         // Fetch data from the MealDB API
-        fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
-            .then(response => response.json()) // Parse JSON response
-            .then(data => {
-                const categories = data.categories;
-                console.log(data);
-                data.categories.forEach(category => {
-                    const ele = document.createElement('div');
-                    ele.className = 'div';
-                    const title = document.createElement('h5');
-                    title.textContent = category.strCategory;
-                    const img1 = document.createElement('img');
-                    img1.src = category.strCategoryThumb;
-                    img1.alt = category.strCategory;
-                    ele.appendChild(title);
-                    ele.appendChild(img1);
-                    div3.appendChild(ele);
+        let fun = async () => {
+            const container = document.getElementById('container');
+            const dataContainer = document.querySelector('.data');
+            fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+                .then(response => response.json()) // Parse JSON response
+                .then(data => {
+                    const categories = data.categories;
+                    console.log(data);
+                    data.categories.forEach(category => {
+                        const ele = document.createElement('div');
+                        ele.className = 'div';
+                        const title = document.createElement('h5');
+                        title.textContent = category.strCategory;
+                        const img1 = document.createElement('img');
+                        img1.src = category.strCategoryThumb;
+                        img1.alt = category.strCategory;
+                        ele.appendChild(title);
+                        ele.appendChild(img1);
+                        div3.appendChild(ele);
+
+
+
+                        document.querySelectorAll('.image').forEach(img1 => {
+                            img.addEventListener('click', async function () {  // Use 'this' instead of event.target
+                                // console.log(this);
+
+                                const category = this.getAttribute('data-clickid');
+                                const mealsResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+                                const mealsData = await mealsResponse.json();
+
+                                let mealsHtml = '';
+                                mealsData.meals.forEach(meal => {
+                                    mealsHtml += `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">`;
+                                });
+
+                                dataContainer.innerHTML = mealsHtml;
+                            });
+                        });
+                    });
                 });
-            });
+        }
+        fun()
+
+
+        // let fun1 = async () => {
+        //     const container = document.getElementById('container');
+        //     const dataContainer = document.querySelector('.data');
+        //     const baseUrl = 'https://www.themealdb.com/api/json/v1/1/categories.php';
+        //     const response = await fetch(baseUrl);
+        //     const data = await response.json();
+        //     let categoriesHtml = '';
+
+        //     data.categories.forEach(category => {
+        //         categoriesHtml += `
+        //         <h5 id="head5">${category.strCategory}</h5>
+        //         <img class="image" alt="${category.strCategory}" data-clickid="${category.strCategory}" src="${category.strCategoryThumb}">`;
+        //     });
+
+        //     container.innerHTML = categoriesHtml;
+
+        //     document.querySelectorAll('.image').forEach(img => {
+        //         img.addEventListener('click', async function () {  // Use 'this' instead of event.target
+        //             // console.log(this);
+
+        //             const category = this.getAttribute('data-clickid');
+        //             const mealsResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+        //             const mealsData = await mealsResponse.json();
+
+        //             let mealsHtml = '';
+        //             mealsData.meals.forEach(meal => {
+        //                 mealsHtml += `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">`;
+        //             });
+
+        //             dataContainer.innerHTML = mealsHtml;
+        //         });
+        //     });
+        // };
+        // fun1();
+
+
 
         //  Hamburger Icon 
         const menuIcon = document.getElementById('menuIcon');
@@ -200,10 +262,23 @@
 
         });
 
-        //  Hamburger Icon Items
-            const description1=document.getElementById('des');
-
-
+        // Get the input field and search icon elements
+        const input = document.getElementById('search-input');
+        const icon = document.getElementById('search-icon');
+        // Add event listener to search icon
+        icon.addEventListener('click', function () {
+            const query = input.value.trim(); // Get the search query
+            if (query) {
+                console.log(`Searching for: ${query}`);
+            } else {
+                console.log("Please enter a search term.");
+            }
+        });
+        input.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                icon.click();
+            }
+        });
 
 
     </script>
